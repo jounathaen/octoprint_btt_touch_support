@@ -43,7 +43,7 @@ class BTT_Touch_Support(
         self.progress_from_time = settings.get_boolean(["progress_from_time"])
 
     def on_event(self, event, payload):
-        self._logger.debug("layer progress changed")
+        self._logger.debug("got event {}".format(event))
         if event == Events.PRINT_STARTED or event == Events.PRINT_DONE:
             # Firmware manages progress bar when printing from SD card
             if payload.get("origin", "") == "sdcard":
@@ -52,8 +52,16 @@ class BTT_Touch_Support(
         if event == Events.PRINT_STARTED:
             self._progress.reset()
             self._set_progress(0)
+            self._printer.commands(["M118 P0 A1 action:print_start"])
         elif event == Events.PRINT_DONE:
             self._set_progress(100, 0)
+            self._printer.commands(["M118 P0 A1 action:print_end"])
+        elif event == Events.PRINT_CANCELLED:
+            self._printer.commands(["M118 P0 A1 action:cancel"])
+        elif event == Events.PRINT_PAUSED:
+            self._printer.commands(["M118 P0 A1 action:pause"])
+        elif event == Events.PRINT_RESUMED:
+            self._printer.commands(["M118 P0 A1 action:resume"])
         elif event == "DisplayLayerProgress_layerChanged":
             cmd = "M118 P0 A1 action:notification Layer Left {}/{}".format(
                 payload.get("currentLayer", "0"), payload.get("totalLayer", "0")

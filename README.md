@@ -1,11 +1,12 @@
 # OctoPrint-BTT TFT Touchscreen support
 
-This plugin adds support for the remote printing features of the [BigTreeTech TFT Touchscreen](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware).
+This plugin adds support for the remote printing features of the [BigTreeTech TFT Touchscreen](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware) for [OctoPrint](https://github.com/OctoPrint/OctoPrint).
 
-- Update the progress indicator.
-- Update the remaining time.
-- Update the Layer progress (requires [DisplayLayerProgress](https://github.com/OllisGit/OctoPrint-DisplayLayerProgress))
-- Support for _Pause_, _Resume_ and _Cancel_ buttons.
+- Automatically switch to printing mode on the TFT upon print start.
+- Update the progress indicator on the TFT during print.
+- Update the remaining time on the TFT during print.
+- Update the Layer progress on the TFT (requires [DisplayLayerProgress](https://github.com/OllisGit/OctoPrint-DisplayLayerProgress))
+- React to the TFT's _Pause_, _Resume_ and _Cancel_ buttons on in OctoPrint.
 
 This is a fork of the [M73Progress Plugin](https://github.com/cesarvandevelde/OctoPrint-M73Progress) - thanks for the work!
 

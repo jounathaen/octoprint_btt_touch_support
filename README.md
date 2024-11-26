@@ -1,6 +1,12 @@
-# OctoPrint-BTT TFT Touchscreen support
+# OctoPrint-BTT TFT Touchscreen Firmware support
 
-This plugin adds support for the remote printing features of the [BigTreeTech TFT Touchscreen](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware) for [OctoPrint](https://github.com/OctoPrint/OctoPrint).
+This plugin adds support for the remote printing features of the [BigTreeTech TFT
+Touchscreen Firmware's](https://github.com/bigtreetech/BIGTREETECH-TouchScreenFirmware)
+_Touch Mode_ for [OctoPrint](https://github.com/OctoPrint/OctoPrint).
+
+This plugin does *not* interact with the firmware's _Marlin Mode_ - a normal serial connection between the TFT and the printer is sufficient.
+
+Features:
 
 - Automatically switch to printing mode on the TFT upon print start.
 - Update the progress indicator on the TFT during print.
@@ -8,7 +14,10 @@ This plugin adds support for the remote printing features of the [BigTreeTech TF
 - Update the Layer progress on the TFT (requires [DisplayLayerProgress](https://github.com/OllisGit/OctoPrint-DisplayLayerProgress))
 - React to the TFT's _Pause_, _Resume_ and _Cancel_ buttons on in OctoPrint.
 
-This is a fork of the [M73Progress Plugin](https://github.com/cesarvandevelde/OctoPrint-M73Progress) - thanks for the work!
+This plugin does *not* interact with the firmware's _Marlin Mode_ - a normal serial connection
+between the TFT and the printer is sufficient.
+
+This is a fork of the [M73Progress plugin](https://github.com/cesarvandevelde/OctoPrint-M73Progress), created by [Cesar Vandevelde](https://github.com/cesarvandevelde)!
 
 <p align="center">
     <img style="width: 35%;" src="https://github.com/jounathaen/octoprint_btt_touch_support/blob/master/btt_touchscreen.jpg" alt="Picture of a BTT TFT Touchscreen">

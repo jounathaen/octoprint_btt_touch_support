@@ -34,9 +34,12 @@ or manually using this URL:
 
 You can fine-tune the plugin's behavior in the `BTT TFT Touchscreen` tab in the OctoPrint settings:
 
-* `Use time estimate`: By default, the plugin uses OctoPrint's built-in progress
+* **Use time estimate**: By default, the plugin uses OctoPrint's built-in progress
   estimate, which is based on the progress inside a G-code file. In some cases,
   a better progress estimate can be calculated from the time elapsed and the
   time remaining: `P = elapsed / (elapsed + remaining)`. This option is
   particularly useful for
   [PrintTimeGenius](https://github.com/eyal0/OctoPrint-PrintTimeGenius) users.
+* **BTT TFT touchscreen serial port number**: The number of the serial port the TFT is connected to. If it is set to `0` (default), all serial ports will be used, which could lead to issues if other plugins also utilize action commands.
+
+  (Typically, your printer has two serial ports `1` and `2`, of which one is the connected to your OctoPrint host and the other one to the TFT)

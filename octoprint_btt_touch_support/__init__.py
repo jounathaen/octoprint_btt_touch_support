@@ -36,11 +36,18 @@ class BTT_Touch_Support(
     octoprint.plugin.RestartNeedingPlugin,
 ):
     def on_after_startup(self):
+        self._logger.debug("Initializing BTT TFT Touchscreen Support plugin")
         self._progress = ProgressMonitor()
         self._printer.register_callback(self._progress)
 
         settings = self._settings
         self.progress_from_time = settings.get_boolean(["progress_from_time"])
+        self.serial_port_nr = settings.get_int(["serial_port_nr"])
+        self._logger.debug(
+            "Settings: progress_from_time: {}, serial_port_nr: {}".format(
+                self.progress_from_time, self.serial_port_nr
+            )
+        )
 
     def on_event(self, event, payload):
         self._logger.debug("got event {}".format(event))
@@ -52,19 +59,31 @@ class BTT_Touch_Support(
         if event == Events.PRINT_STARTED:
             self._progress.reset()
             self._set_progress(0)
-            self._printer.commands(["M118 P0 A1 action:print_start"])
+            self._printer.commands(
+                ["M118 P{} A1 action:print_start".format(self.serial_port_nr)]
+            )
         elif event == Events.PRINT_DONE:
             self._set_progress(100, 0)
-            self._printer.commands(["M118 P0 A1 action:print_end"])
+            self._printer.commands(
+                ["M118 P{} A1 action:print_end".format(self.serial_port_nr)]
+            )
         elif event == Events.PRINT_CANCELLED:
-            self._printer.commands(["M118 P0 A1 action:cancel"])
+            self._printer.commands(
+                ["M118 P{} A1 action:cancel".format(self.serial_port_nr)]
+            )
         elif event == Events.PRINT_PAUSED:
-            self._printer.commands(["M118 P0 A1 action:pause"])
+            self._printer.commands(
+                ["M118 P{} A1 action:pause".format(self.serial_port_nr)]
+            )
         elif event == Events.PRINT_RESUMED:
-            self._printer.commands(["M118 P0 A1 action:resume"])
+            self._printer.commands(
+                ["M118 P{} A1 action:resume".format(self.serial_port_nr)]
+            )
         elif event == "DisplayLayerProgress_layerChanged":
-            cmd = "M118 P0 A1 action:notification Layer Left {}/{}".format(
-                payload.get("currentLayer", "0"), payload.get("totalLayer", "0")
+            cmd = "M118 P{} A1 action:notification Layer Left {}/{}".format(
+                self.serial_port_nr,
+                payload.get("currentLayer", "0"),
+                payload.get("totalLayer", "0"),
             )
             self._logger.debug("layer progress changed: {}".format(cmd))
             self._printer.commands([cmd])
@@ -96,24 +115,32 @@ class BTT_Touch_Support(
 
     def _set_progress(self, progress, time_left=None):
         if time_left is None:
-            gcode1 = "M118 P0 A1 action:notification Time Left 00h00m00s"
+            gcode1 = "M118 P{} A1 action:notification Time Left 00h00m00s".format(
+                self.serial_port_nr
+            )
         else:
-            gcode1 = "M118 P0 A1 action:notification Time Left {:02.0f}h{:02.0f}m{:02.0f}s".format(
-                time_left / 60, time_left % 60, self._progress.time_left_s % 60
+            gcode1 = "M118 P{} A1 action:notification Time Left {:02.0f}h{:02.0f}m{:02.0f}s".format(
+                self.serial_port_nr,
+                time_left / 60,
+                time_left % 60,
+                self._progress.time_left_s % 60,
             )
 
-        gcode2 = "M118 P0 A1 action:notification Data Left {:.0f}/100".format(progress)
+        gcode2 = "M118 P{} A1 action:notification Data Left {:.0f}/100".format(
+            self.serial_port_nr, progress
+        )
 
         self._printer.commands([gcode1, gcode2])
 
     def get_settings_defaults(self):
-        return dict(progress_from_time=False)
+        return dict(progress_from_time=False, serial_port_nr=0)
 
     def on_settings_save(self, data):
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
 
         settings = self._settings
         self.progress_from_time = settings.get_boolean(["progress_from_time"])
+        self.serial_port_nr = settings.get_boolean(["serial_port_nr"])
 
     def get_template_configs(self):
         return [

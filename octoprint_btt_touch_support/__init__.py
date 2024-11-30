@@ -97,7 +97,9 @@ class BTT_Touch_Support(
             return
 
         progress = 0.0
-        time_left = self._progress.time_left_s / 60
+        time_left = None
+        if self._progress.time_left_s is not None:
+            time_left = self._progress.time_left_s / 60
 
         if (
             self.progress_from_time

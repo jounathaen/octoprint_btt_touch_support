@@ -1,12 +1,26 @@
 <h3>{{ _("BTT TFT Touchscreen Settings") }}</h3>
 
 <form class="form-horizontal">
-    <div class="controls">
-        <label class="checkbox">
-            <input type="checkbox" data-bind="checked: settings.plugins.btt_touch_support.progress_from_time"> {{ _("Use time estimate") }}
+    <div class="control-group" title="{{ _('BTT TFT Touchscreen remaining time calculation')|edq }}">
+        <div class="controls">
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: settings.plugins.btt_touch_support.progress_from_time"> {{ _("Use time estimate") }}
+                <span class="help-block">
+                    {{ _("Calculate progress based on elapsed and remaining time instead of file progress. Useful for <code>PrintTimeGenius</code> users.") }}
+                </span>
+            </label>
+        </div>
+    </div>
+
+    <div class="control-group" title="{{ _('BTT TFT touchscreen serial port number')|edq }}">
+        <label class="control-label" for="settings-serial_port_nr">{{ _('Serial Port Number') }}</label>
+        <div class="controls">
+            <input type="text" class="input-block-level" data-bind="value: settings.plugins.btt_touch_support.serial_port_nr, valueUpdate: 'afterkeydown'">
             <span class="help-block">
-                {{ _("Calculate progress based on time elapsed and time remaining. Useful for <code>PrintTimeGenius</code> users.") }}
+                The number of the serial port the TFT is connected to. If it is set to <code>0</code>, all serial ports will be used, which could lead to issues if other plugins also utilize action commands.
+                <br>
+                (Typically, your printer has two serial ports <code>1</code> and <code>2</code>, of which one is the connected to your OctoPrint host and the other one to the TFT)
             </span>
-        </label>
+        </div>
     </div>
 </form>

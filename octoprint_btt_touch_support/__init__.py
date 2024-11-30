@@ -50,42 +50,41 @@ class BTT_Touch_Support(
         )
 
     def on_event(self, event, payload):
-        self._logger.debug("got event {}".format(event))
         if event == Events.PRINT_STARTED or event == Events.PRINT_DONE:
             # Firmware manages progress bar when printing from SD card
             if payload.get("origin", "") == "sdcard":
                 return
 
         if event == Events.PRINT_STARTED:
+            cmd = "M118 P{} A1 action:print_start".format(self.serial_port_nr)
+            self._logger.debug("Notifying TFT of print start: {}".format(cmd))
             self._progress.reset()
             self._set_progress(0)
-            self._printer.commands(
-                ["M118 P{} A1 action:print_start".format(self.serial_port_nr)]
-            )
+            self._printer.commands([cmd])
         elif event == Events.PRINT_DONE:
+            cmd = "M118 P{} A1 action:print_end".format(self.serial_port_nr)
+            self._logger.debug("Notifying TFT of print done: {}".format(cmd))
             self._set_progress(100, 0)
-            self._printer.commands(
-                ["M118 P{} A1 action:print_end".format(self.serial_port_nr)]
-            )
+            self._printer.commands([cmd])
         elif event == Events.PRINT_CANCELLED:
-            self._printer.commands(
-                ["M118 P{} A1 action:cancel".format(self.serial_port_nr)]
-            )
+            cmd = "M118 P{} A1 action:cancel".format(self.serial_port_nr)
+            self._logger.debug("Notifying TFT of print canceled: {}".format(cmd))
+            self._printer.commands([cmd])
         elif event == Events.PRINT_PAUSED:
-            self._printer.commands(
-                ["M118 P{} A1 action:pause".format(self.serial_port_nr)]
-            )
+            cmd = "M118 P{} A1 action:pause".format(self.serial_port_nr)
+            self._logger.debug("Notifying TFT of print pause: {}".format(cmd))
+            self._printer.commands([cmd])
         elif event == Events.PRINT_RESUMED:
-            self._printer.commands(
-                ["M118 P{} A1 action:resume".format(self.serial_port_nr)]
-            )
+            cmd = "M118 P{} A1 action:resume".format(self.serial_port_nr)
+            self._logger.debug("Notifying TFT of print resume: {}".format(cmd))
+            self._printer.commands([cmd])
         elif event == "DisplayLayerProgress_layerChanged":
             cmd = "M118 P{} A1 action:notification Layer Left {}/{}".format(
                 self.serial_port_nr,
                 payload.get("currentLayer", "0"),
                 payload.get("totalLayer", "0"),
             )
-            self._logger.debug("layer progress changed: {}".format(cmd))
+            self._logger.debug("Notifying TFT of layer change: {}".format(cmd))
             self._printer.commands([cmd])
 
     def on_print_progress(self, storage, path, progress):
@@ -169,19 +168,17 @@ class BTT_Touch_Support(
         )
 
     def hook_actioncommands(self, comm, line, command, *args, **kwargs):
-        self._logger.debug("Command received: 'action:%s'" % (command))
-
         if command == None:
             return
 
         if command == "notification remote pause":
-            self._logger.debug("pausing")
+            self._logger.debug("Got pause command from TFT")
             self._printer.pause_print()
         if command == "notification remote resume":
-            self._logger.debug("resuming")
+            self._logger.debug("Got resume command from TFT")
             self._printer.resume_print()
         if command == "notification remote cancel":
-            self._logger.debug("canceling")
+            self._logger.debug("Got cancel command from TFT")
             self._printer.cancel_print()
 
 

@@ -163,7 +163,7 @@ class BTT_Touch_Support(
                 repo="OctoPrint-BTT_Touch_Support",
                 current=self._plugin_version,
                 # update method: pip
-                pip="https://github.com/jounathaen/octoprint_btt_touch_support/archive/{target_version}.zip"
+                pip="https://github.com/jounathaen/octoprint_btt_touch_support/archive/{target_version}.zip",
             )
         )
 

@@ -32,7 +32,7 @@ or manually using this URL:
 
 ## Configuration
 
-You can fine-tune the plugin's behavior in the `BTT TFT Touchscreen` tab in the OctoPrint settings:
+You can fine-tune the plugin's behavior in the `BTT TFT Touchscreen` tab in the OctoPrint settings (don't forget to **restart** OctoPrint to apply changes):
 
 * **Use time estimate**: By default, the plugin uses OctoPrint's built-in progress
   estimate, which is based on the progress inside a G-code file. In some cases,

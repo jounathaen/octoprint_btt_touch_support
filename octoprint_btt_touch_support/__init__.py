@@ -168,7 +168,7 @@ class BTT_Touch_Support(
         )
 
     def hook_actioncommands(self, comm, line, command, *args, **kwargs):
-        if command == None:
+        if command is None:
             return
 
         if command == "notification remote pause":

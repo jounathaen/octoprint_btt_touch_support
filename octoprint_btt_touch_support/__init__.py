@@ -153,6 +153,9 @@ class BTT_Touch_Support(
             )
         ]
 
+    def is_template_autoescaped(self):
+        return True
+
     def get_update_information(self):
         return dict(
             btt_touch_support=dict(

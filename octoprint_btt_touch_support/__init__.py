@@ -142,7 +142,7 @@ class BTT_Touch_Support(
 
         settings = self._settings
         self.progress_from_time = settings.get_boolean(["progress_from_time"])
-        self.serial_port_nr = settings.get_boolean(["serial_port_nr"])
+        self.serial_port_nr = settings.get_int(["serial_port_nr"])
 
     def get_template_configs(self):
         return [
